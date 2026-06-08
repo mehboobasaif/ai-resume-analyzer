@@ -1,0 +1,308 @@
+{% extends 'analyzer/base.html' %}
+
+{% block content %}
+
+<div class="card shadow-lg p-5">
+
+    <h5 class="text-end">
+
+        Welcome, {{ request.user.username }}
+
+    </h5>
+
+    <div class="text-center mb-5">
+
+    <h1 class="display-4 fw-bold">
+
+        Smart ATS Resume Analyzer
+
+    </h1>
+
+    <p class="lead">
+
+        Analyze your resume using AI-powered ATS scoring and skill matching.
+
+    </p>
+
+    <p>
+
+        Improve your chances of getting shortlisted for software developer roles.
+
+    </p>
+
+</div>
+
+    <p class="text-center">
+
+        Upload your resume and compare it with a job description.
+
+    </p>
+
+    {% if message %}
+
+        <div class="alert alert-success">
+
+            {{ message }}
+
+        </div>
+
+    {% endif %}
+
+    <div class="row text-center mb-5">
+
+    <div class="col-md-4 mb-3">
+
+        <div class="card shadow-sm p-4">
+
+            <h2 class="text-primary">
+
+                <i class="bi bi-file-earmark-text"></i>
+
+            </h2>
+
+            <h4>Resume Analysis</h4>
+
+            <p>Analyze resumes instantly using ATS scoring.</p>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4 mb-3">
+
+        <div class="card shadow-sm p-4">
+
+            <h2 class="text-success">
+
+                <i class="bi bi-bar-chart-line"></i>
+
+            </h2>
+
+            <h4>Skill Matching</h4>
+
+            <p>Compare resumes with job descriptions.</p>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4 mb-3">
+
+        <div class="card shadow-sm p-4">
+
+            <h2 class="text-danger">
+
+                <i class="bi bi-lightbulb"></i>
+
+            </h2>
+
+            <h4>AI Suggestions</h4>
+
+            <p>Get smart recommendations to improve resumes.</p>
+
+        </div>
+
+    </div>
+
+</div>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+        <div class="mb-3">
+
+            <label class="form-label">Upload Resume</label>
+
+            <input type="file" class="form-control" name="resume">
+
+        </div>
+
+        <div class="mb-3">
+
+            <label class="form-label">Job Description</label>
+
+            <textarea
+                class="form-control"
+                rows="10"
+                name="job_description">
+            </textarea>
+
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">
+
+            Analyze Resume
+
+        </button>
+
+    </form>
+
+    <div class="row text-center mt-5 mb-4">
+
+    <div class="col-md-4 mb-3">
+
+        <div class="card shadow-sm p-3 h-100">
+
+            <h4>ATS Scoring</h4>
+
+            <p>
+                Compare your resume with job descriptions instantly.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4 mb-3">
+
+        <div class="card shadow-sm p-3 h-100">
+
+            <h4>Skill Analysis</h4>
+
+            <p>
+                Detect missing technical skills automatically.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4 mb-3">
+
+        <div class="card shadow-sm p-3 h-100">
+
+            <h4>AI Suggestions</h4>
+
+            <p>
+                Receive smart recommendations to improve your resume.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+    <hr>
+
+{% if match_score %}
+
+    <div class="mt-5">
+
+        <h2 class="mb-3">
+
+            ATS Match Score
+
+        </h2>
+
+        <div class="progress mb-3">
+
+            <div
+                class="progress-bar bg-success"
+                role="progressbar"
+                style="width: {{ match_score }}%;">
+
+                {{ match_score }}%
+
+            </div>
+
+        </div>
+
+        {% if match_score >= 80 %}
+
+            <div class="alert alert-success">
+
+                Excellent match for this job role 🎉
+
+            </div>
+
+        {% elif match_score >= 60 %}
+
+            <div class="alert alert-warning">
+
+                Good match, but resume can be improved ⚡
+
+            </div>
+
+        {% else %}
+
+            <div class="alert alert-danger">
+
+                Low ATS score. Add more relevant skills 🚀
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+{% endif %}
+
+    {% if missing_skills %}
+
+    <div class="mt-5">
+
+        <h2 class="mb-3">
+
+            Missing Skills
+
+        </h2>
+
+        {% for skill in missing_skills %}
+
+            <span class="badge bg-danger p-2 m-1">
+
+                {{ skill }}
+
+            </span>
+
+        {% endfor %}
+
+    </div>
+
+{% endif %}
+
+    {% if suggestions %}
+
+    <div class="mt-5">
+
+        <h2 class="mb-3">
+
+            Improvement Suggestions
+
+        </h2>
+
+        {% for suggestion in suggestions %}
+
+            <div class="alert alert-info">
+
+                {{ suggestion }}
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+{% endif %}
+
+{% if ai_feedback %}
+
+<div class="card shadow-lg p-4 mt-5">
+
+    <h2 class="mb-3">
+        🤖 AI Resume Feedback
+    </h2>
+
+    <pre style="white-space: pre-wrap; font-family: inherit;">
+{{ ai_feedback }}
+    </pre>
+
+</div>
+
+{% endif %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'analyzer/base.html' %}
+
+{% block content %}
+
+<div class="card shadow p-4">
+
+    <h1 class="mb-4">
+
+        Resume Analysis History
+
+    </h1>
+
+    <table class="table table-bordered">
+
+        <thead>
+
+            <tr>
+
+                <th>ATS Score</th>
+                <th>Date</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for analysis in analyses %}
+
+            <tr>
+
+                <td>{{ analysis.match_score }}%</td>
+
+                <td>{{ analysis.created_at }}</td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}
